@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+
+</head>
+<body>
+<div class="jumbotron" align="center">
+<div class="container">
+<h1>Book a ride</h1>
+<form method="post" action="confirm_ride">
+   <div class="form-group">
+       <label for="email">UserID</label>
+       <input type="text" class="form-control-dark" name="user">
+
+   </div>
+   <div class="form-group">
+       <label for="source">Source</label>
+       <input type="text"  class="form-control-dark" name="source">
+   </div>
+    <div class="form-group">
+        <label for="destination">Destination</label>
+        <input type="text"  class="form-control-dark"  name="destination" >
+    </div>
+
+    <input type="submit" class="btn btn-primary" value="Book">
+
+</form>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,18 @@
+extends layout
+
+block content
+    body
+    form(action="/book", method='post')
+        #form-group
+            label Enter User:
+            input.form-control(name='userid',type='text')
+        #form-group
+            label Enter Pickup longitude, latitude:
+            input.form-control(name='p_long',type='text')
+            input.form-control(name='p_lat',type='text')
+        #form-group
+            label Enter drop longitude,latitude :
+            input.form-control(name='d_long',type='text')
+            input.form-control(name='d_lat',type='text')
+        input.btn.btn-primary(type='Submit',value='Book Ride')
+        input.btn.btn-primary(type='Submit',value='Update Record')

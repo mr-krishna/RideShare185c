@@ -1,0 +1,17 @@
+{
+  "name": "chicago-rides",
+  "description": "NoSQL project",
+  "main": "app.js",
+  "authors": [
+    "KC"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

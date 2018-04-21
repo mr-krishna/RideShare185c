@@ -1,0 +1,71 @@
+var express = require('express');
+var request = require('request');
+var app = express();
+var router = express.Router();
+var axios = require('axios');
+var querystring = require('querystring')
+
+
+app.set('view engine', 'ejs');
+
+/* GET home page. */
+
+router.get('/', function(req, res, next) {
+  res.render('home', { title: 'Book Taxi' });
+});
+
+//url for geo location API
+//https://maps.googleapis.com/maps/api/geocode/json?address=sap+center+san+jose&key=AIzaSyD9FGZt9Iqa22A1u_pn7pReIjOz7WAcLYA
+
+//url for distance matrix API
+//https://maps.googleapis.com/maps/api/distancematrix/json?origins=sjsu&destinations=alameda&key=AIzaSyD9FGZt9Iqa22A1u_pn7pReIjOz7WAcLYA
+
+router.post('/confirm_ride',function (req,res,next) {
+
+    var source = encodeURI(req.body.source)
+    var destination = encodeURI(req.body.destination)
+    console.log(source)
+    var url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins="+source+"&destinations="+destination+"&key=AIzaSyD9FGZt9Iqa22A1u_pn7pReIjOz7WAcLYA"
+    console.log(url)
+
+        axios.get(url).then(
+        response => {
+            //console.log(response.data.results[0].geometry.location.lat);
+            var distance = response.data.rows[0].elements[0].distance.text
+            var time = response.data.rows[0].elements[0].duration.text
+
+            console.log(distance)
+            console.log(time)
+            //var latitude = response.data.results[0].geometry.location.lat
+            res.render('confirm_ride',{
+                travel_time : time,
+                distance : distance
+
+            })
+        })
+        .catch(error => {
+                console.log(error);
+            }
+        )
+})
+
+
+
+
+
+
+
+  // request.get("https://maps.googleapis.com/maps/api/geocode/json?address="+location+"&key=AIzaSyD9FGZt9Iqa22A1u_pn7pReIjOz7WAcLYA", function (error,res, body) {
+  //
+  //        let coo =  JSON.parse(body);
+  //         console.log(coo);
+  //        // res.render('./confirm_ride.ejs')
+  //
+  // });
+
+
+// router.get('/kc', function(req, res, next) {
+//     res.render('index', { title: 'KC' });
+// });
+
+module.exports = router;
