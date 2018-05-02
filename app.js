@@ -10,6 +10,20 @@ var kcRouter = require('./routes/loaddb');
 //var bookRouter = require('./routes/bookride');
 var bodyParser = require('body-parser');
 var homeRouter = require('./routes/index');
+var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
+
+//connect to MongoDB
+mongoose.connect('mongodb://127.0.0.1:27017/nosql');
+var db = mongoose.connection;
+
+//handle mongo error
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function () {
+    // we're connected!
+});
+
+
 
 // db.once('open', function () {
 //     console.log('connected to MongDB');
@@ -28,6 +42,15 @@ var homeRouter = require('./routes/index');
 
 var app = express();
 
+//use sessions for tracking logins
+app.use(session({
+    secret: 'work hard',
+    resave: true,
+    saveUninitialized: false,
+    store: new MongoStore({
+        mongooseConnection: db
+    })
+}));
 app.listen(3000, function () {
     console.log('server started on 3000')
 });
@@ -36,15 +59,21 @@ app.listen(3000, function () {
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// serve static files from template
+app.use(express.static(__dirname + '/templateLogReg'));
 
 app.use('/home', homeRouter);
-app.use('/users', usersRouter);
+// include routes
+//var routes = require('./routes/router');
+//app.use('/', routes);
+//app.use('/users', usersRouter);
 app.use('/', kcRouter);
 
 //app.use('/book',bookRouter);
@@ -63,7 +92,7 @@ app.use(bodyParser.json())
 
 // error handler
 app.use(function (err, req, res, next) {
-    // set locals, only providing error in developmentjhjgg
+    // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
 

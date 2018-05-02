@@ -16,9 +16,10 @@ app.set('view engine', 'ejs');
 
 /* GET home page. */
 
-router.get('/', function(req, res, next) {
-  res.render('home', { title: 'Book Taxi' });
-});
+ router.get('/', function(req, res, next) {
+   res.render('home', { title: 'Book Taxi' });
+
+ });
 
 //url for geo location API
 //https://maps.googleapis.com/maps/api/geocode/json?address=sap+center+san+jose&key=AIzaSyD9FGZt9Iqa22A1u_pn7pReIjOz7WAcLYA
