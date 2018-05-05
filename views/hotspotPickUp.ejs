@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+
+</head>
+<body>
+<div class="jumbotron" align="left">
+    <h1>Hotspot based on Pick Up Location</h1>
+
+        <% for (var i = 0; i < hotspots.length;  i++) { %>
+            <h4>Community ID : <%= hotspots[i]._id %></h4>
+            <h4>Maximum Value : <%= hotspots[i].value %></h4>
+
+        <% } %>
+</div>
+
+</body>
+</html>

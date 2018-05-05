@@ -8,6 +8,7 @@ app.set('view engine', 'ejs');
 var User = require('../models/user');
 var taxi = require('../models/taxi_model')
 var mongoose = require('mongoose');
+var MongoClient = require('mongodb').MongoClient;
 //connect to mongodb
 //mongoose.connect('mongodb://127.0.0.1:27017/nosql');
 //var db = mongoose.connection;
@@ -98,7 +99,45 @@ router.post('/', function (req, res, next) {
     return next(err);
   }
 })
+router.get('/analytics',function (req,res,next) {
+    res.render('analytics', { title: 'Taxi Analytics' });
+})
+router.get('/usersQuery',function (req,res,next) {
+    MongoClient.connect('mongodb://127.0.0.1:27017/nosql', function(err, db) {
+        var dbo = db.db("nosql");
+        var userQuery = dbo.collection('users').find().toArray(function(err, results) {
+            //override report incoming data with results from mongo
+            req.userdata = results;
+            res.render('usersQuery', { users:  req.userdata});
+        });
+        // var hotspotMapR=dbo.collection('taxi').mapReduce(function() { emit(this.pickup_community_area,1);},function(communityId, sum) {  return Array.sum(sum);  },{out:"pickupHotZone"});
+        // var hotspot=dbo.collection('taxi').find().sort({value:-1}).limit(1).toArray(function(err, results) {
+        //     console.log(results);
+        //     res.render("hotspot",{ hotspots:  results});
+        // });
+    });
+})
 
+router.get('/hotspotPickUp',function (req,res,next) {
+    MongoClient.connect('mongodb://127.0.0.1:27017/nosql', function(err, db) {
+        var dbo = db.db("nosql");
+        var hotspotMapR=dbo.collection('taxi').mapReduce(function() { emit(this.pickup_community_area,1);},function(communityId, sum) {  return Array.sum(sum);  },{out:"pickupHotZone"});
+        var hotspot=dbo.collection('pickupHotZone').find().sort({value:-1}).limit(1).toArray(function(err, results) {
+            console.log(results);
+            res.render("hotspotPickUp",{ hotspots:  results});
+        });
+    });
+})
+router.get('/hotspotDropOff',function (req,res,next) {
+    MongoClient.connect('mongodb://127.0.0.1:27017/nosql', function(err, db) {
+        var dbo = db.db("nosql");
+        var hotspotMapR=dbo.collection('taxi').mapReduce(function() { emit(this.dropoff_community_area,1); }, function(communityId, sum) {  return Array.sum(sum);  },{out:"dropHotZone"});
+        var hotspot=dbo.collection('dropHotZone').find().sort({value:-1}).limit(1).toArray(function(err, results) {
+            console.log(results);
+            res.render("hotspotPickUp",{ hotspots:  results});
+        });
+    });
+})
 // GET route after registering
 router.get('/profile', function (req, res, next) {
   User.findById(req.session.userId)

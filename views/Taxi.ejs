@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+
+</head>
+<body>
+<div class="jumbotron" align="left">
+    <h1>Hotspot based on Pick Up Location</h1>
+
+    <% for (var i = 0; i < hotspots.length;  i++) { %>
+    <h4>User ID : <%= hotspots[i].user_id %></h4>
+    <h4>Taxi ID : <%= hotspots[i].taxi_id %></h4>
+    <h4>Trip Date : <%= hotspots[i].trip_date %></h4>
+    <h4>Trip start timestamp:  <%= hotspots[i].trip_start_timestamp %></h4>
+    <h4>Trip end timestamp:  <%= hotspots[i].trip_end_timestamp  %></h4>
+    <h4>Trip Seconds:  <%= hotspots[i].trip_seconds  %></h4>
+    <h4>Trip Miles:  <%= hotspots[i].trip_miles  %></h4>
+    <h4>Pickup Census Tract:  <%= hotspots[i].pickup_census_tract  %></h4>
+    <h4>Dropoff Census Tract:  <%= hotspots[i].dropoff_census_tract  %></h4>
+    <h4>Pickup Community Area:  <%= hotspots[i].pickup_community_area  %></h4>
+    <h4>Dropoff Community Area  <%= hotspots[i].dropoff_community_area  %></h4>
+    <h4>Fare:  <%= hotspots[i].fare  %></h4>
+    <h4>Tips:  <%= hotspots[i].tips  %></h4>
+    <h4>Tolls:  <%= hotspots[i].tolls  %></h4>
+    <h4>Extras:  <%= hotspots[i].extras  %></h4>
+    <h4>Trip Total:  <%= hotspots[i].trip_total  %></h4>
+    <h4>Payment Type:  <%= hotspots[i].payment_type  %></h4>
+    <h4>company:  <%= hotspots[i].company  %></h4>
+    <% } %>
+</div>
+
+</body>
+</html>
