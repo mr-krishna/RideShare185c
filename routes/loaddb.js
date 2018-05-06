@@ -133,8 +133,37 @@ router.get('/hotspotDropOff',function (req,res,next) {
         var dbo = db.db("nosql");
         var hotspotMapR=dbo.collection('taxi').mapReduce(function() { emit(this.dropoff_community_area,1); }, function(communityId, sum) {  return Array.sum(sum);  },{out:"dropHotZone"});
         var hotspot=dbo.collection('dropHotZone').find().sort({value:-1}).limit(1).toArray(function(err, results) {
-            console.log(results);
             res.render("hotspotPickUp",{ hotspots:  results});
+        });
+    });
+})
+router.get('/MonthHighestTip',function (req,res,next) {
+    MongoClient.connect('mongodb://127.0.0.1:27017/nosql', function(err, db) {
+        var dbo = db.db("nosql");
+        var MonthHighestTipMapR=dbo.collection('taxi').mapReduce(function() { emit(this.month ,this.tips); },function(month, tips) { return Array.sum(tips); },{out:"monthlyTips"});
+        var MonthHighest=dbo.collection('monthlyTips').find().sort({value:-1}).limit(1).toArray(function(err, results) {
+            res.render("MonthHighestTip",{ object:  results});
+            console.log("Result:",results);
+        });
+    });
+})
+router.get('/MaximumMiles',function (req,res,next) {
+    MongoClient.connect('mongodb://127.0.0.1:27017/nosql', function(err, db) {
+        var dbo = db.db("nosql");
+        var MaximumMilesMapR=dbo.collection('taxi').mapReduce(function() { emit(this.taxi_id,this.trip_miles); }, function(taxiId, tripMiles) { return Array.sum(tripMiles);  },{query:{"month": "1"}, out:"totalMiles"});
+        var MaxMiles=dbo.collection('totalMiles').find().sort({value:-1}).limit(1).toArray(function(err, results) {
+            res.render("MaximumMiles",{ object:  results});
+            console.log("Result:",results);
+        });
+    });
+})
+router.get('/MostValuedCompany',function (req,res,next) {
+    MongoClient.connect('mongodb://127.0.0.1:27017/nosql', function(err, db) {
+        var dbo = db.db("nosql");
+        var MostValuedCompanyMapR=dbo.collection('taxi').mapReduce(function() { distAndCost = {dist:this.trip_miles, cost:this.trip_total}; emit(this.company, distAndCost); }, function(companyId, distCost) { reducedVal = { totaldist: 0, totalCost: 0 }; for (var idx = 0; idx < distCost.length; idx++) { reducedVal.totaldist += distCost[idx].dist; reducedVal.totalCost += distCost[idx].cost; } return reducedVal.totaldist/reducedVal.totalCost;},{out:"mostValuedCompany"});
+        var MostValuedTaxiCompany=dbo.collection('mostValuedCompany').find().sort({value:-1}).limit(1).toArray(function(err, results) {
+            res.render("MostValuedCompany",{ object:  results});
+            console.log("Result:",results);
         });
     });
 })

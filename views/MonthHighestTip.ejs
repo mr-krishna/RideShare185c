@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+
+</head>
+<body>
+<div class="jumbotron" align="left">
+    <h1>Month that has highest tip collected</h1>
+
+    <% for (var i = 0; i < object.length;  i++) { %>
+    <h4>Month : <%= object[i]._id %></h4>
+    <h4>Tip : <%= object[i].value %></h4>
+
+    <% } %>
+</div>
+
+</body>
+</html>
