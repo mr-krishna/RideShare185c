@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+
+</head>
+<body>
+<div class="jumbotron" align="left">
+    <h1>Users</h1>
+    <table>
+        <tr>
+            <th>Email</th><th>UserName</th>
+        </tr>
+
+        <% for (var i = 0; i < users.length;  i++) { %>
+        <tr>
+            <td><%= users[i].email %></td>
+            <td><%= users[i].username %></td>
+        </tr>
+        <% } %>
+    </table>
+</div>
+
+</body>
+</html>
